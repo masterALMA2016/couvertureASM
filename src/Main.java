@@ -165,7 +165,7 @@ public class Main {
         classReader.accept(mcw, 0);       
         
         //Write the output to a class file
-        File outputDir=new File("out/");
+        File outputDir=new File("bin/");
         outputDir.mkdirs();
         DataOutputStream dout=new DataOutputStream(new FileOutputStream(new File(outputDir,"TestClass.class")));
         dout.write(cw.toByteArray());

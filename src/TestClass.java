@@ -27,6 +27,7 @@ public class TestClass {
 		cl.setNb(5);		cl.setStr("jj");
 		cl.setNb(5);
 		cl.getStr();
+		Compteur.afficher();
 	}
 		
 }
