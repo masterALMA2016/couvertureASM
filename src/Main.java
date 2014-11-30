@@ -96,12 +96,13 @@ public class Main {
             super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
             */
             System.out.println(methodName);
-            	
-            super.visitMethodInsn(INVOKESTATIC, "Compteur",  "getInstance", "()Z");
-            super.visitInsn(POP);
+           //         super.visitLdcInsn("method: "+methodName);
+
+            //super.visitMethodInsn(INVOKESTATIC, "Compteur",  "getInstance", "(Ljava/lang/String;)V");
+            //super.visitInsn(POP);
             super.visitLdcInsn("method: "+methodName);
             super.visitMethodInsn(INVOKESTATIC, "Compteur",  "compte", "(Ljava/lang/String;)V");
-
+            	
             //un probleme avec ca
            //super.visitMethodInsn(Opcodes.INVOKESTATIC, "Compteur", "compte", "(Lvoid;)V");
            /*
@@ -157,11 +158,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         InputStream in=Main.class.getResourceAsStream("../bin/TestClass.class");
         ClassReader classReader=new ClassReader(in);
-        ClassWriter cw=new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        ClassWriter cw=new ClassWriter(ClassWriter.COMPUTE_FRAMES);
         
         //Wrap the ClassWriter with our custom ClassVisitor
         ModifierClassWriter mcw=new ModifierClassWriter(Opcodes.ASM4, cw);
-        classReader.accept(mcw, 0);
+        classReader.accept(mcw, 0);       
         
         //Write the output to a class file
         File outputDir=new File("out/");

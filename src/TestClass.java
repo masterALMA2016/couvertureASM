@@ -19,17 +19,14 @@ public class TestClass {
 	}
 
 	public static void main(String[] args){
-		//hhhhhhh
-		Compteur.getInstance();
+//		Compteur.getInstance("ij");
 		Compteur.compte("jj");
-		//hhhhhhhh
-		System.out.println("kkk");
-		TestClass tc = new TestClass();
-		tc.getStr();
-		tc.getStr();
-		tc.setNb(2);
-		tc.setStr("kkk");
-		
+		TestClass cl = new TestClass();
+		cl.setStr("jj");
+		cl.setNb(5);		cl.setStr("jj");
+		cl.setNb(5);		cl.setStr("jj");
+		cl.setNb(5);
+		cl.getStr();
 	}
 		
 }

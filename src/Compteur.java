@@ -10,11 +10,12 @@ public class Compteur extends Object{
 	
 	private Compteur(){}
 	
-	public static Compteur getInstance(){
+	public static Compteur getInstance(String s){
 		return cpt;
 	}
 	
 	public static void compte(String method){
+		getInstance(method);
 		System.out.println(method);
 	}
 }
