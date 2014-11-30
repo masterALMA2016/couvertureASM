@@ -72,7 +72,7 @@ import org.objectweb.asm.Opcodes;
 
 public class Main {
 
-    public static class ModifierMethodWriter extends MethodVisitor{
+    public static class ModifierMethodWriter extends MethodVisitor implements Opcodes{
 
         private String methodName;
         
@@ -95,9 +95,37 @@ public class Main {
             super.visitLdcInsn("method: "+methodName);
             super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
             */
-            super.visitFieldInsn(Opcodes.GETSTATIC, "Compteur",  "getInstance", "LCompteur;");
+            System.out.println(methodName);
+            	
+            super.visitMethodInsn(INVOKESTATIC, "Compteur",  "getInstance", "()Z");
+            super.visitInsn(POP);
             super.visitLdcInsn("method: "+methodName);
-            super.visitMethodInsn(Opcodes.INVOKESTATIC, "Compteur", "compte", "L(void;)V");
+            super.visitMethodInsn(INVOKESTATIC, "Compteur",  "compte", "(Ljava/lang/String;)V");
+
+            //un probleme avec ca
+           //super.visitMethodInsn(Opcodes.INVOKESTATIC, "Compteur", "compte", "(Lvoid;)V");
+           /*
+            * on veut rajouter ca dans le bit code :
+					 			
+					Comteur.getInstance();
+					Compteur.compte();
+					
+				Ce qui doit donner :
+				
+				 invokestatic Compteur.getInstance() : Compteur [56]
+    			 pop
+    			 ldc <String "method: main"> [58]
+    			 invokestatic Compteur.compte(java.lang.String) : void [60]
+    			 
+    			 mais on faisait ca:
+    			 
+    			  getstatic Compteur.getInstance : Compteur [17]
+     			  ldc <String "method: main"> [53]
+      			  invokestatic Compteur.compte(void) : void [23]
+            * 
+            * 
+            */
+            
         }
 
         

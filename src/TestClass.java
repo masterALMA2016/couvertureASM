@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 
 public class TestClass {
 
@@ -15,7 +17,19 @@ public class TestClass {
 	public void setStr(String str) {
 		this.str = str;
 	}
-	
-	
+
+	public static void main(String[] args){
+		//hhhhhhh
+		Compteur.getInstance();
+		Compteur.compte("jj");
+		//hhhhhhhh
+		System.out.println("kkk");
+		TestClass tc = new TestClass();
+		tc.getStr();
+		tc.getStr();
+		tc.setNb(2);
+		tc.setStr("kkk");
+		
+	}
 		
 }

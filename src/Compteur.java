@@ -2,7 +2,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class Compteur {
+public class Compteur extends Object{
 
 	private static Compteur cpt = new Compteur();
 	
