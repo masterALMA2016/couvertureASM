@@ -1,3 +1,4 @@
+
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -10,9 +11,9 @@ public class Compteur{
 		map= new TreeMap<String, Integer>();
 	}
 	
-	private static Compteur compteur;
+	private static Compteur compteur = null;
 	
-	public static Compteur getInstance(String s){
+	public static synchronized Compteur getInstance(String s){
 		if(compteur==null){
 			compteur = new Compteur();
 		}
@@ -36,27 +37,5 @@ public class Compteur{
 			System.out.println(entry.getKey() + "  "+entry.getValue());
 		}
 	}
-	
-	/*
-	private static Compteur cpt = new Compteur();
-	
-	public Map<String, Integer> map= new TreeMap<String, Integer>(); 
-	private Compteur(){}
-	
-	public static Compteur getInstance(String s){
-		return cpt;
-	}
-	
-	public static void compte(String method){
-		getInstance(method);
-		System.out.println(method);
-	}
 
-	public Map<String, Integer> getMap() {
-		return map;
-	}
-
-	public void setMap(Map<String, Integer> map) {
-		this.map = map;
-	}*/
 }

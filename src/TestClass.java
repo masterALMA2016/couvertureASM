@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 
 
@@ -23,10 +24,21 @@ public class TestClass {
 		Compteur.compte("jj");
 		TestClass cl = new TestClass();
 		cl.setStr("jj");
-		cl.setNb(5);		cl.setStr("jj");
-		cl.setNb(5);		cl.setStr("jj");
+		cl.setNb(5);	
+		cl.getClass();
+		cl.setStr("jj");
+		cl.setNb(5);	
+		cl.setStr("jj");
 		cl.setNb(5);
 		cl.getStr();
+		TestClass2 tc2 = new TestClass2();
+		tc2.getI();
+		tc2.getI();
+		tc2.getI();
+		tc2.getV();
+		tc2.setI(5);
+		tc2.setI(5);
+		tc2.setI(5);
 		Compteur.afficher();
 	}
 		
