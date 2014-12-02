@@ -1,11 +1,16 @@
+import java.lang.OutOfMemoryError;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Scanner;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
 import org.objectweb.asm.ClassReader;
@@ -17,7 +22,6 @@ import org.objectweb.asm.Opcodes;
 public class Main {
 
     public static class ModifierMethodWriter extends MethodVisitor implements Opcodes{
-
         private String methodName;
         private String className;
         public ModifierMethodWriter(int api, MethodVisitor mv, String methodName, String className) {
@@ -57,38 +61,49 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        JarFile jf = new JarFile("/home/Soge/Téléchargements/asm-4.0.jar");
-       Enumeration<JarEntry> ee =  jf.entries();
-       JarEntry je = ee.nextElement();
-       while(ee.hasMoreElements()){
-    	   System.out.println(je);
-    	   je=ee.nextElement();    	   System.out.println(je);
+ 
+        String chemin_jar;
+    	Scanner saisieUtilisateur = new Scanner(System.in);
+    	System.out.println("Veuillez saisir le chemin d'un jar :");
+    	chemin_jar = saisieUtilisateur.next();
 
-    	   
-       }
-        ZipEntry ze = jf.getEntry("org/objectweb/asm/ClassReader.class" );
-        System.out.println(ze);
-        InputStream inn = jf.getInputStream(ze);
-    	
-        File rep = new File("bin/");
-        String[] liste = rep.list();
+    	System.out.println("Veuillez saisir le package :");
+    	String nom_package = saisieUtilisateur.next(); 
+    	nom_package = nom_package.replace(".", "/");
+///home/Soge/Bureau/test.jar
+    	JarFile jf = new JarFile(chemin_jar);
+        Enumeration<JarEntry> ee =  jf.entries();
+        System.out.println(ee);
+        JarEntry je = null;
 
-        for(int i=0;i<liste.length;i++){
-        	System.out.println(liste[i]);
-        	if(liste[i].endsWith(".class")==true && !liste[i].contains("Compteur") && !liste[i].contains("Main")){
-        		InputStream in=Main.class.getResourceAsStream("../bin/"+liste[i]);
+        List<String> l = new ArrayList<String>();
+        
+        while(ee.hasMoreElements()){
+        	je = ee.nextElement();
+        	if(je.toString().contains(nom_package)){
+        		l.add(je.toString());
+        	}
+        }
+        ZipEntry ze;
+
+        for(int i=0;i<l.size();i++){
+            ze = jf.getEntry(l.get(i) );
+            InputStream in = jf.getInputStream(ze);
                 ClassReader classReader=new ClassReader(in);
                 ClassWriter cw=new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-                ModifierClassWriter mcw=new ModifierClassWriter(Opcodes.ASM4, cw, liste[i]);
+                ModifierClassWriter mcw=new ModifierClassWriter(Opcodes.ASM4, cw, l.get(i).substring(l.get(i).lastIndexOf("/")));
                 classReader.accept(mcw, 0);       
                 
-                File outputDir=new File("bin/");
+                File outputDir=new File("out/");
                 outputDir.mkdirs();
-                DataOutputStream dout=new DataOutputStream(new FileOutputStream(new File(outputDir,liste[i])));
+                DataOutputStream dout=new DataOutputStream(new FileOutputStream(new File("/home/Soge/Bureau/test.jar",l.get(i).substring(l.get(i).lastIndexOf("/")))));
                 dout.write(cw.toByteArray());
-        	}
-        } 
+                
+        }
        
     }
+ 
+       
+    
 
 }
