@@ -3,6 +3,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -53,9 +57,22 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        JarFile jf = new JarFile("/home/Soge/Téléchargements/asm-4.0.jar");
+       Enumeration<JarEntry> ee =  jf.entries();
+       JarEntry je = ee.nextElement();
+       while(ee.hasMoreElements()){
+    	   System.out.println(je);
+    	   je=ee.nextElement();    	   System.out.println(je);
+
+    	   
+       }
+        ZipEntry ze = jf.getEntry("org/objectweb/asm/ClassReader.class" );
+        System.out.println(ze);
+        InputStream inn = jf.getInputStream(ze);
+    	
         File rep = new File("bin/");
         String[] liste = rep.list();
-        
+
         for(int i=0;i<liste.length;i++){
         	System.out.println(liste[i]);
         	if(liste[i].endsWith(".class")==true && !liste[i].contains("Compteur") && !liste[i].contains("Main")){
