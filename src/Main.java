@@ -1,9 +1,12 @@
 import java.lang.OutOfMemoryError;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -12,12 +15,16 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import test2.Test3;
 
 public class Main {
 
@@ -60,9 +67,8 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-
  
-        String chemin_jar;
+    	String chemin_jar;
     	Scanner saisieUtilisateur = new Scanner(System.in);
     	System.out.println("Veuillez saisir le chemin d'un jar :");
     	chemin_jar = saisieUtilisateur.next();
@@ -70,12 +76,11 @@ public class Main {
     	System.out.println("Veuillez saisir le package :");
     	String nom_package = saisieUtilisateur.next(); 
     	nom_package = nom_package.replace(".", "/");
-///home/Soge/Bureau/test.jar
+
     	JarFile jf = new JarFile(chemin_jar);
         Enumeration<JarEntry> ee =  jf.entries();
-        System.out.println(ee);
-        JarEntry je = null;
 
+        JarEntry je = null;
         List<String> l = new ArrayList<String>();
         
         while(ee.hasMoreElements()){
@@ -87,18 +92,21 @@ public class Main {
         ZipEntry ze;
 
         for(int i=0;i<l.size();i++){
-            ze = jf.getEntry(l.get(i) );
+        	String chemin = l.get(i);
+        	
+            ze = jf.getEntry(chemin);
             InputStream in = jf.getInputStream(ze);
-                ClassReader classReader=new ClassReader(in);
-                ClassWriter cw=new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-                ModifierClassWriter mcw=new ModifierClassWriter(Opcodes.ASM4, cw, l.get(i).substring(l.get(i).lastIndexOf("/")));
-                classReader.accept(mcw, 0);       
-                
-                File outputDir=new File("out/");
-                outputDir.mkdirs();
-                DataOutputStream dout=new DataOutputStream(new FileOutputStream(new File("/home/Soge/Bureau/test.jar",l.get(i).substring(l.get(i).lastIndexOf("/")))));
-                dout.write(cw.toByteArray());
-                
+     
+            ClassReader classReader=new ClassReader(in);
+            
+            ClassWriter cw=new ClassWriter(ClassWriter.COMPUTE_FRAMES);            
+            ModifierClassWriter mcw=new ModifierClassWriter(Opcodes.ASM4, cw, chemin.substring(chemin.lastIndexOf("/")));
+            classReader.accept(mcw, 0);       
+           
+            File outputDir=new File("out/"+l.get(i).substring(0, chemin.lastIndexOf("/")+1));
+            outputDir.mkdirs();
+            DataOutputStream dout=new DataOutputStream(new FileOutputStream(new File(outputDir,chemin.substring(chemin.lastIndexOf("/")))));
+            dout.write(cw.toByteArray());
         }
        
     }
