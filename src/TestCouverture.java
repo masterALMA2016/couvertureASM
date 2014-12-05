@@ -23,9 +23,9 @@ public class TestCouverture {
 		t1.setK(true);
 		t1.setK(true);
 		
-		Test2 t2 = new Test2();
+		/*Test2 t2 = new Test2();
 		
-		t2.setH('l');
+		t2.setH('l');*/
 		
 		Compteur.afficher();
 	}
