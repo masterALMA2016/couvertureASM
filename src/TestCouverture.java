@@ -1,6 +1,5 @@
-import java.io.IOException;
-
 import test.oui.Test1;
+import test.oui.Test2;
 
 
 public class TestCouverture {
@@ -23,6 +22,10 @@ public class TestCouverture {
 		t1.setK(true);
 		t1.setK(true);
 		t1.setK(true);
+		
+		Test2 t2 = new Test2();
+		
+		t2.setH('l');
 		
 		Compteur.afficher();
 	}

@@ -13,7 +13,7 @@ public class Compteur{
 	
 	private static Compteur compteur = null;
 	
-	public static synchronized Compteur getInstance(String s){
+	public static synchronized Compteur getInstance(){
 		if(compteur==null){
 			compteur = new Compteur();
 		}
@@ -21,7 +21,7 @@ public class Compteur{
 	}
 	
 	public static void compte(String method){
-		getInstance(method);		
+		getInstance();		
 		if(map.get(method)==null){
 			map.put(method, 1);
 		}
@@ -38,4 +38,10 @@ public class Compteur{
 		}
 	}
 
+	public static int getCompte(String str){
+		getInstance();
+		if (map.containsKey(str))
+			return map.get(str);
+		return 0;
+	}
 }
